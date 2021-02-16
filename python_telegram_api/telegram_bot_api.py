@@ -17,13 +17,13 @@ class TelegramBotApi():
         self.token = token # Bot token
         self.lastUpdateId = 0
 
-    def _getToken(self) -> str:
+    def getToken(self) -> str:
         return self.token
 
-    def _setToken(self, token: str):
+    def setToken(self, token: str):
         self.token = token
 
-    def _getUpdates(self, offset=0, limit=100, timeout=0, allowed_updates=[]) -> List:
+    def getUpdates(self, offset=0, limit=100, timeout=0, allowed_updates=[]) -> List:
         """   
             Use this method to receive incoming updates using long polling. 
             
@@ -51,8 +51,8 @@ class TelegramBotApi():
 
         return updates["result"]
 
-    def _getLastUpdateId(self) -> int:
+    def getLastUpdateId(self) -> int:
         return self.lastUpdateId
 
-    def _setLastUpdateId(self, lastUpdateId: int):
+    def setLastUpdateId(self, lastUpdateId: int):
         self.lastUpdateId = lastUpdateId
