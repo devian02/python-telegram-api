@@ -111,3 +111,65 @@ class TelegramBotApi():
             return True
         except:
             return False
+
+    def setWebhook(self, url: str, ip_address='', max_connections=40, allowed_updates=[]) -> bool:
+        """   
+            Use this method to receive incoming updates using long polling. 
+            
+            :param url: HTTPS url to send updates to.
+            :param ip_address: The fixed IP address which will be used to send webhook requests instead of the IP address resolved through DNS.
+            :param max_connections: Maximum allowed number of simultaneous HTTPS connections to the webhook for update delivery, 1-100. Defaults to 40.
+            :param allowed_updates: List of the update types you want your bot to receive.
+
+            :type url: String
+            :type ip_address: String
+            :type max_connections: int
+            :type allowed_updates: List
+
+            :return: Returns True on success.
+            :rtype: Boolean
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/setWebhook 
+        """
+
+        token = self.token
+
+        response = requests.get(f"https://api.telegram.org/bot{token}/setWebhook?url={url}&ip_address={ip_address}&max_connections={max_connections}&allowed_updates={allowed_updates}").json()
+
+        return response['ok']
+
+    def deleteWebhook(self, drop_pending_updates=True) -> bool:
+        """   
+            Use this method to remove webhook integration.
+            
+            :param drop_pending_updates: HTTPS url to send updates to.
+
+            :type drop_pending_updates: Boolean
+
+            :return: Returns True on success.
+            :rtype: Boolean
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/deleteWebhook
+        """
+
+        token = self.token
+
+        response = requests.get(f"https://api.telegram.org/bot{token}/deleteWebhook?drop_pending_updates={drop_pending_updates}").json()
+
+        return response['ok']
+
+    def getWebhookInfo(self) -> Dict:
+        """   
+            Use this method to get current webhook status.
+
+            :return: Returns a WebhookInfo object.
+            :rtype: Dict
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getWebhookInfo
+        """
+
+        token = self.token
+
+        response = requests.get(f"https://api.telegram.org/bot{token}/getWebhookInfo").json()
+
+        return response['result']
