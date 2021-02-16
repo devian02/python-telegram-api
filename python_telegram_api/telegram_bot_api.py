@@ -43,7 +43,7 @@ class TelegramBotApi():
 
         token = self.token
 
-        updates = requests.get(f"https://api.telegram.org/bot{token}/getUpdates?offset={offset}&limit={limit}&timeout={timeout}")
+        updates = requests.get(f"https://api.telegram.org/bot{token}/getUpdates?offset={offset}&limit={limit}&timeout={timeout}").json()
         
         self.lastUpdateId = updates["result"][-1]["update_id"]
 
