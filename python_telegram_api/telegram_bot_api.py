@@ -7,7 +7,7 @@ Author: Eric Damian
 """
 
 import requests
-from typing import Dict
+from typing import List, Dict
 
 class TelegramBotApi():
     """ The implementation of the Telegram APIs Bot """
@@ -16,6 +16,12 @@ class TelegramBotApi():
         
         self.token = token # Bot token
         self.last_update_id = 0
+
+    def _getToken(self) -> str:
+        return self.token
+
+    def _setToken(self, token: str):
+        self.token = token
 
     def _getUpdates(self, offset=0, limit=100, timeout=0) -> Dict:
         """   
