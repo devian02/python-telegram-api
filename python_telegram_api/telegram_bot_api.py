@@ -17,6 +17,40 @@ class TelegramBotApi():
         self.token = token # Bot token
         self.lastUpdateId = 0
 
+        self.debug = False # Use this variable to enable or disable debugging mode
+
+    def getDebugMode(self) -> bool:
+        """   
+            Use this method to get your actual debug mode. 
+
+            :return: Actual debug mode.
+            :rtype: Boolean
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getDebugMode
+        """
+
+        return self.debug
+
+    def setDebugMode(self, mode: bool) -> bool:
+        """   
+            Use this method to set debug mode. 
+            
+            :param mode: When True all responses from Telegram APIs are printed to console.
+
+            :type mode: Boolean
+
+            :return: True if mode has been set correctly.
+            :rtype: Boolean
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/setDebugMode 
+        """
+
+        try:
+            self.debug = mode
+            return True
+        except:
+            return False
+
     def getToken(self) -> str:
         """   
             Use this method to get your actual bot token. 
@@ -71,14 +105,17 @@ class TelegramBotApi():
 
         token = self.token
 
-        updates = requests.get(f"https://api.telegram.org/bot{token}/getUpdates?offset={offset}&limit={limit}&timeout={timeout}&allowed_updates={allowed_updates}").json()
+        response = requests.get(f"https://api.telegram.org/bot{token}/getUpdates?offset={offset}&limit={limit}&timeout={timeout}&allowed_updates={allowed_updates}").json()
         
-        if len(updates["result"]) >= 1:
+        if self.debug:
+            print(response)
+
+        if len(response["result"]) >= 1:
             # If there are updates available
 
-            self.setLastUpdateId(updates["result"][-1]["update_id"]) # Set lastUpdateId
+            self.setLastUpdateId(response["result"][-1]["update_id"]) # Set lastUpdateId
 
-        return updates["result"]
+        return response["result"]
 
     def getLastUpdateId(self) -> int:
         """   
@@ -136,6 +173,9 @@ class TelegramBotApi():
 
         response = requests.get(f"https://api.telegram.org/bot{token}/setWebhook?url={url}&ip_address={ip_address}&max_connections={max_connections}&allowed_updates={allowed_updates}").json()
 
+        if self.debug:
+            print(response)
+
         return response['ok']
 
     def deleteWebhook(self, drop_pending_updates=True) -> bool:
@@ -156,6 +196,9 @@ class TelegramBotApi():
 
         response = requests.get(f"https://api.telegram.org/bot{token}/deleteWebhook?drop_pending_updates={drop_pending_updates}").json()
 
+        if self.debug:
+            print(response)
+
         return response['ok']
 
     def getWebhookInfo(self) -> Dict:
@@ -171,5 +214,8 @@ class TelegramBotApi():
         token = self.token
 
         response = requests.get(f"https://api.telegram.org/bot{token}/getWebhookInfo").json()
+
+        if self.debug:
+            print(response)
 
         return response['result']
