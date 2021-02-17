@@ -14,7 +14,7 @@ class TelegramBotApi():
     
     def __init__(self, token: str):
         
-        self.token = token # Bot token
+        self.botToken = token # Bot token
         self.lastUpdateId = 0
 
         self.debug = False # Use this variable to enable or disable debugging mode
@@ -61,7 +61,7 @@ class TelegramBotApi():
             .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getToken 
         """
 
-        return self.token
+        return self.botToken
 
     def setToken(self, token: str) -> bool:
         """   
@@ -78,7 +78,7 @@ class TelegramBotApi():
         """
 
         try:
-            self.token = token
+            self.botToken = token
             return True
         except:
             return False
@@ -103,7 +103,7 @@ class TelegramBotApi():
             .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getUpdates 
         """
 
-        token = self.token
+        token = self.botToken
 
         response = requests.get(f"https://api.telegram.org/bot{token}/getUpdates?offset={offset}&limit={limit}&timeout={timeout}&allowed_updates={allowed_updates}").json()
         
@@ -169,7 +169,7 @@ class TelegramBotApi():
             .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/setWebhook 
         """
 
-        token = self.token
+        token = self.botToken
 
         response = requests.get(f"https://api.telegram.org/bot{token}/setWebhook?url={url}&ip_address={ip_address}&max_connections={max_connections}&allowed_updates={allowed_updates}").json()
 
@@ -192,7 +192,7 @@ class TelegramBotApi():
             .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/deleteWebhook
         """
 
-        token = self.token
+        token = self.botToken
 
         response = requests.get(f"https://api.telegram.org/bot{token}/deleteWebhook?drop_pending_updates={drop_pending_updates}").json()
 
@@ -211,7 +211,7 @@ class TelegramBotApi():
             .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getWebhookInfo
         """
 
-        token = self.token
+        token = self.botToken
 
         response = requests.get(f"https://api.telegram.org/bot{token}/getWebhookInfo").json()
 
@@ -219,3 +219,46 @@ class TelegramBotApi():
             print(response)
 
         return response['result']
+
+    def getMe(self) -> Dict:
+        """   
+            Use this method to get basic bot informations. 
+
+            :return: Returns basic information about the bot in form of a User object.
+            :rtype: Dict
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getMe
+        """
+
+        token = self.botToken
+
+        response = requests.get(f"https://api.telegram.org/bot{token}/getMe").json()
+
+        if self.debug:
+            print(response)
+
+        return response["result"]
+
+    def getBotUsername(self) -> str:
+        """   
+            Use this method to get your actual bot username. 
+
+            :return: Bot username.
+            :rtype: String
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getBotUsername 
+        """
+
+        return self.getMe()['username']
+    
+    def getBotFirstName(self) -> str:
+        """   
+            Use this method to get your actual bot first name. 
+
+            :return: Bot first name.
+            :rtype: String
+
+            .. note:: For more info -> https://github.com/xSklero/python-telegram-api/wiki/getBotFirstName
+        """
+
+        return self.getMe()['first_name']
