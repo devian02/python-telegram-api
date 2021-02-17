@@ -6,9 +6,9 @@ Author: Eric Damian
 
 """
 
-import urllib.parse
 import requests
 from typing import List, Dict
+import json
 
 class TelegramBotApi():
     """ The implementation of the Python Telegram APIs Bot """
@@ -321,13 +321,13 @@ class TelegramBotApi():
 
         params = (
             ('chat_id', chat_id),
-            ('text', urllib.parse.quote(text)),
+            ('text', text),
             ('parse_mode', parse_mode),
             ('disable_web_page_preview', disable_web_page_preview),
             ('disable_notification', disable_notification),
             ('reply_to_message_id', reply_to_message_id),
             ('allow_sending_without_reply', allow_sending_without_reply),
-            ('reply_markup', reply_markup),
+            ('reply_markup', json.dumps(reply_markup)),
         )
 
         response = requests.get(f"https://api.telegram.org/bot{token}/sendMessage", params=params).json()
