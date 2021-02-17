@@ -6,6 +6,7 @@ Author: Eric Damian
 
 """
 
+import urllib.parse
 import requests
 from typing import List, Dict
 
@@ -262,3 +263,47 @@ class TelegramBotApi():
         """
 
         return self.getMe()['first_name']
+
+    def sendMessage(self, chat_id: int, text: str, parse_mode='MarkdownV2', disable_web_page_preview=False, disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send text messages. 
+
+        Notes:
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendMessage
+            
+        Args:
+            chat_id (int): Unique identifier for the target chat or username of the target channel.
+            text (str): Text of the message to be sent (max 4096 chars).
+            parse_mode (str, optional): Mode for parsing entities in the message text. Defaults to 'MarkdownV2'.
+            disable_web_page_preview (bool, optional): If True disables link previews for links in this message. Defaults to False.
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: On success, the sent Message is returned
+
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('text', urllib.parse.quote(text)),
+            ('parse_mode', parse_mode),
+            ('disable_web_page_preview', disable_web_page_preview),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', reply_markup),
+        )
+
+        response = requests.get(f"https://api.telegram.org/bot{token}/sendMessage", params=params).json()
+        
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendMessage method. Enable debug mode for more info', 'description': response['description']}
