@@ -296,14 +296,14 @@ class TelegramBotApi():
         except:
             return ''
 
-    def sendMessage(self, chat_id: int, text: str, parse_mode='MarkdownV2', disable_web_page_preview=False, disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+    def sendMessage(self, chat_id: str, text: str, parse_mode='MarkdownV2', disable_web_page_preview=False, disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
         """ Use this method to send text messages. 
 
         Notes:
             For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendMessage
             
         Args:
-            chat_id (int): Unique identifier for the target chat or username of the target channel.
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
             text (str): Text of the message to be sent (max 4096 chars).
             parse_mode (str, optional): Mode for parsing entities in the message text. Defaults to 'MarkdownV2'.
             disable_web_page_preview (bool, optional): If True disables link previews for links in this message. Defaults to False.
@@ -332,6 +332,43 @@ class TelegramBotApi():
 
         response = requests.get(f"https://api.telegram.org/bot{token}/sendMessage", params=params).json()
         
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendMessage method. Enable debug mode for more info', 'description': response['description']}
+
+
+    def forwardMessage(self, chat_id: str, from_chat_id: str, message_id: int, disable_notification=False) -> Dict:
+        """ Use this method to forward messages of any kind.
+
+        Notes:
+                For more info -> https://github.com/xSklero/python-telegram-api/wiki/forwardMessage
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            from_chat_id (str): Unique identifier for the chat where the original message was sent.
+            message_id (int): Message identifier in the chat specified in from_chat_id.
+            disable_notification (bool, optional): Sends the message silently. Users will receive a notification with no sound.. Defaults to False.
+
+        Returns:
+            Dict: The sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('from_chat_id', from_chat_id),
+            ('message_id', message_id),
+            ('disable_notification', disable_notification),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/forwardMessage", params=params).json()
+
         if self.debug:
             print(response)
 
