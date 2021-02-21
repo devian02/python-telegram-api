@@ -627,8 +627,8 @@ class TelegramBotApi():
 
         Args:
             chat_id (str): Unique identifier for the target chat or username of the target channel.
-            audio_url (str, optional): Pass an HTTP URL as a String for Telegram to get a audio from the Internet. Your audio must be in the .MP3 or .M4A format. Defaults to "".
-            local_audio (str, optional): Your audio path. Your audio must be in the .MP3 or .M4A format. Bots can currently send audio files of up to 50 MB in size, this limit may be changed in the future.
+            video_url (str, optional): Pass an HTTP URL as a String for Telegram to get a video from the Internet. Your video must be in the .MP3 or .M4A format. Defaults to "".
+            local_video (str, optional): Your video path. Your video must be in the .MP3 or .M4A format. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
             caption (str, optional): Video caption. Defaults to "".
             width (str, optional): Video width. Defaults to "".
             height (str, optional): Video height. Defaults to "".
@@ -697,3 +697,206 @@ class TelegramBotApi():
             return response['result']
         else:
             return {'error': 'Error with sendVideo method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendAnimation(self, chat_id: str, animation_url="", local_animation="", caption="", width="", height="", duration="", thumb="", parse_mode='MarkdownV2', disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send animation files (GIF or H.264/MPEG-4 AVC video without sound)
+
+        Notes:
+                For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendAnimation
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            animation_url (str, optional): Pass an HTTP URL as a String for Telegram to get a animation from the Internet. Your animation must be in the .MP3 or .M4A format. Defaults to "".
+            local_animation (str, optional): Your animation path. Your animation must be GIF or H.264/MPEG-4 AVC video without sound. Bots can currently send animation files of up to 50 MB in size, this limit may be changed in the future.
+            caption (str, optional): Video caption. Defaults to "".
+            width (str, optional): Video width. Defaults to "".
+            height (str, optional): Video height. Defaults to "".
+            duration (str, optional): Duration of the video in seconds. Defaults to "".
+            thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320.
+            parse_mode (str, optional): Mode for parsing entities in the message text. Defaults to 'MarkdownV2'.
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: On success, the sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('animation', animation_url),
+            ('parse_mode', parse_mode),
+            ('caption', caption),
+            ('duration', duration),
+            ('width', width),
+            ('height', height),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        if local_animation != "":  # If using a local animation file
+
+            try:
+
+                if thumb != "":  # If using a thumb
+
+                    try:
+                        response = requests.post(f"https://api.telegram.org/bot{token}/sendAnimation", params=params, files={
+                                                 'animation': (open(local_animation, 'rb')), 'thumb': (open(thumb, 'rb'))}).json()
+                    except:
+                        return {'error': 'Error with sendAnimation method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+                else:
+
+                    try:
+                        response = requests.post(f"https://api.telegram.org/bot{token}/sendAnimation", params=params, files={
+                                                 'animation': (open(local_animation, 'rb'))}).json()
+                    except:
+                        return {'error': 'Error with sendAnimation method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+            except:
+                return {'error': 'Error with sendAnimation method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+        else:
+
+            response = requests.get(
+                f"https://api.telegram.org/bot{token}/sendAnimation", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendAnimation method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendVoice(self, chat_id: str, voice_url="", local_voice="", caption="", duration="", parse_mode='MarkdownV2', disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send audio files
+
+        Notes:
+                For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendVoice
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            voice_url (str, optional): Pass an HTTP URL as a String for Telegram to get a voice from the Internet. Defaults to "".
+            local_voice (str, optional): Your audio path. Bots can currently send voice messages of up to 50 MB. Your audio must be in an .OGG file encoded. Defaults to "".
+            caption (str, optional): Voice caption. Defaults to "".
+            duration (str, optional): Duration of the video in seconds. Defaults to "".
+            parse_mode (str, optional): Mode for parsing entities in the message text. Defaults to 'MarkdownV2'.
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: On success, the sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('voice', voice_url),
+            ('parse_mode', parse_mode),
+            ('caption', caption),
+            ('duration', duration),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        if local_voice != "": # If using a local file
+
+            try:
+                response = requests.post(f"https://api.telegram.org/bot{token}/sendVoice", params=params, files={'voice': (open(local_voice, 'rb'))}).json()
+            except:
+                return {'error': 'Error with sendVoice method. Enable debug mode for more info', 'description': 'Bad file path'}
+            
+        else:
+
+            response = requests.get(f"https://api.telegram.org/bot{token}/sendVoice", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendVoice method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendVideoNote(self, chat_id: str, local_video="", length="30", duration="", thumb="", parse_mode='MarkdownV2', disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send rounded square mp4 videos of up to 1 minute long. Sending video notes by a URL is currently unsupported. 
+
+        Notes:
+                For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendVideoNote
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            local_video (str, optional): Your video path. Your video must be in the .MP3 or .M4A format. Bots can currently send video files of up to 50 MB in size, this limit may be changed in the future.
+            length (str, optional): Video width and height, i.e. diameter of the video message. Defaults to "".
+            duration (str, optional): Duration of the video in seconds. Defaults to "".
+            thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320.
+            parse_mode (str, optional): Mode for parsing entities in the message text. Defaults to 'MarkdownV2'.
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: On success, the sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('parse_mode', parse_mode),
+            ('duration', duration),
+            ('length', length),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        if local_video != "":  # If using a local video file
+
+            try:
+
+                if thumb != "":  # If using a thumb
+
+                    try:
+                        response = requests.post(f"https://api.telegram.org/bot{token}/sendVideoNote", params=params, files={
+                                                 'video_note': (open(local_video, 'rb')), 'thumb': (open(thumb, 'rb'))}).json()
+                    except:
+                        return {'error': 'Error with sendVideoNote method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+                else:
+
+                    try:
+                        response = requests.post(f"https://api.telegram.org/bot{token}/sendVideoNote", params=params, files={
+                                                 'video_note': (open(local_video, 'rb'))}).json()
+                    except:
+                        return {'error': 'Error with sendVideoNote method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+            except:
+                return {'error': 'Error with sendVideoNote method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+        else:
+
+            response = requests.get(
+                f"https://api.telegram.org/bot{token}/sendVideoNote", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendVideoNote method. Enable debug mode for more info', 'description': response['description']}
