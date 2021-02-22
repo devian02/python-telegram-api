@@ -233,7 +233,7 @@ def getInputMediaVideo(media: str, caption="", thumb="", parse_mode='MarkdownV2'
     return {'type': 'video', 'media': media, 'caption': caption, 'parse_mode': parse_mode, 'thumb': thumb, 'width': width, 'height': height, 'duration': duration, 'supports_streaming': supports_streaming}
 
 
-def getInputMediaAnimation(media: str, caption="", thumb="", parse_mode='MarkdownV2', width="", height="", duration="") -> Dict:
+def getInputMediaAnimation(media: str, caption="", thumb="", parse_mode='MarkdownV2', width=-1, height=-1, duration=-1) -> Dict:
     """ Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
     Notes:
