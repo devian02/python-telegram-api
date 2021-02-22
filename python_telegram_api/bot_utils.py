@@ -190,3 +190,107 @@ def getForceReply(selective=False) -> Dict:
     """
 
     return {'force_reply': True, 'selective': selective}
+
+
+def getInputMediaPhoto(media: str, caption="", parse_mode='MarkdownV2') -> Dict:
+    """ Represents a photo to be sent.
+
+    Notes:
+        For more info -> https://github.com/xSklero/python-telegram-api/wiki/InputMediaPhoto
+
+    Args:
+        media (str): pass an HTTP URL for Telegram to get a file from the Internet, or pass your local file.
+        caption (str, optional): Caption of the photo to be sent, 0-1024 characters. Defaults to "".
+        parse_mode (str, optional): Mode for parsing entities in the photo caption. Defaults to 'MarkdownV2'.
+
+    Returns:
+        Dict: Returns a photo to be sent with sendMediaGroup.
+    """
+
+    return {'type':'photo', 'media':media, 'caption':caption, 'parse_mode':parse_mode}
+
+
+def getInputMediaVideo(media: str, caption="", thumb="", parse_mode='MarkdownV2', width="", height="", duration="", supports_streaming=False) -> Dict:
+    """ Represents a video to be sent.
+
+    Notes:
+        For more info -> https://github.com/xSklero/python-telegram-api/wiki/InputMediaVideo
+
+    Args:
+        media (str): pass an HTTP URL for Telegram to get a file from the Internet, or pass your local file.
+        caption (str, optional): Caption of the video to be sent, 0-1024 characters. Defaults to "".
+        parse_mode (str, optional): Mode for parsing entities in the video caption. Defaults to 'MarkdownV2'.
+        thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Defaults to "".
+        width (str, optional): Video width. Defaults to "".
+        height (str, optional): Video height. Defaults to "".
+        duration (str, optional): Video duration. Defaults to "".
+        supports_streaming (bool, optional): Pass True, if the uploaded video is suitable for streaming. Defaults to False.
+
+    Returns:
+        Dict: Returns a video to be sent.
+    """
+
+    return {'type': 'video', 'media': media, 'caption': caption, 'parse_mode': parse_mode, 'thumb': thumb, 'width': width, 'height': height, 'duration': duration, 'supports_streaming': supports_streaming}
+
+
+def getInputMediaAnimation(media: str, caption="", thumb="", parse_mode='MarkdownV2', width="", height="", duration="") -> Dict:
+    """ Represents an animation file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
+
+    Notes:
+        For more info -> https://github.com/xSklero/python-telegram-api/wiki/InputMediaAnimation
+
+    Args:
+        media (str): pass an HTTP URL for Telegram to get a file from the Internet, or pass your local file.
+        caption (str, optional): Caption of the animation to be sent, 0-1024 characters. Defaults to "".
+        parse_mode (str, optional): Mode for parsing entities in the animation caption. Defaults to 'MarkdownV2'.
+        thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Defaults to "".
+        width (str, optional): Animation width. Defaults to "".
+        height (str, optional): Animation height. Defaults to "".
+        duration (str, optional): Animation duration. Defaults to "".
+
+    Returns:
+        Dict: Returns a Animation to be sent.
+    """
+
+    return {'type': 'animation', 'media': media, 'caption': caption, 'parse_mode': parse_mode, 'thumb': thumb, 'width': width, 'height': height, 'duration': duration}
+
+
+def getInputMediaAudio(media: str, caption="", thumb="", parse_mode='MarkdownV2', performer="", title="", duration="") -> Dict:
+    """ Represents an Audio file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
+
+    Notes:
+        For more info -> https://github.com/xSklero/python-telegram-api/wiki/InputMediaAudio
+
+    Args:
+        media (str): pass an HTTP URL for Telegram to get a file from the Internet, or pass your local file.
+        caption (str, optional): Caption of the Audio to be sent, 0-1024 characters. Defaults to "".
+        parse_mode (str, optional): Mode for parsing entities in the Audio caption. Defaults to 'MarkdownV2'.
+        thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Defaults to "".
+        performer (str, optional): Audio performer. Defaults to "".
+        title (str, optional): Audio title. Defaults to "".
+        duration (str, optional): Audio duration. Defaults to "".
+
+    Returns:
+        Dict: Returns a Audio to be sent.
+    """
+
+    return {'type': 'audio', 'media': media, 'caption': caption, 'parse_mode': parse_mode, 'thumb': thumb, 'performer': performer, 'title': title, 'duration': duration}
+
+
+def getInputMediaDocument(media: str, caption="", parse_mode='MarkdownV2', thumb="") -> Dict:
+    """ Represents a Document to be sent.
+
+    Notes:
+        For more info -> https://github.com/xSklero/python-telegram-api/wiki/InputMediaDocument
+
+    Args:
+        media (str): pass an HTTP URL for Telegram to get a file from the Internet, or pass your local file.
+        caption (str, optional): Caption of the Document to be sent, 0-1024 characters. Defaults to "".
+        parse_mode (str, optional): Mode for parsing entities in the Document caption. Defaults to 'MarkdownV2'.
+        thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Defaults to "".
+    
+    Returns:
+        Dict: Returns a Document to be sent with sendMediaGroup.
+    """
+
+    return {'type': 'document', 'media': media, 'caption': caption, 'thumb': thumb, 'parse_mode': parse_mode}
