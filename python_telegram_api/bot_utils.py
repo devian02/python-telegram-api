@@ -210,7 +210,7 @@ def getInputMediaPhoto(media: str, caption="", parse_mode='MarkdownV2') -> Dict:
     return {'type':'photo', 'media':media, 'caption':caption, 'parse_mode':parse_mode}
 
 
-def getInputMediaVideo(media: str, caption="", thumb="", parse_mode='MarkdownV2', width="", height="", duration="", supports_streaming=False) -> Dict:
+def getInputMediaVideo(media: str, caption="", thumb="", parse_mode='MarkdownV2', width=-1, height=-1, duration=-1, supports_streaming=False) -> Dict:
     """ Represents a video to be sent.
 
     Notes:
@@ -221,9 +221,9 @@ def getInputMediaVideo(media: str, caption="", thumb="", parse_mode='MarkdownV2'
         caption (str, optional): Caption of the video to be sent, 0-1024 characters. Defaults to "".
         parse_mode (str, optional): Mode for parsing entities in the video caption. Defaults to 'MarkdownV2'.
         thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Defaults to "".
-        width (str, optional): Video width. Defaults to "".
-        height (str, optional): Video height. Defaults to "".
-        duration (str, optional): Video duration. Defaults to "".
+        width (int, optional): Video width. Defaults to -1.
+        height (int, optional): Video height. Defaults to -1.
+        duration (int, optional): Video duration. Defaults to -1.
         supports_streaming (bool, optional): Pass True, if the uploaded video is suitable for streaming. Defaults to False.
 
     Returns:
@@ -244,9 +244,9 @@ def getInputMediaAnimation(media: str, caption="", thumb="", parse_mode='Markdow
         caption (str, optional): Caption of the animation to be sent, 0-1024 characters. Defaults to "".
         parse_mode (str, optional): Mode for parsing entities in the animation caption. Defaults to 'MarkdownV2'.
         thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Defaults to "".
-        width (str, optional): Animation width. Defaults to "".
-        height (str, optional): Animation height. Defaults to "".
-        duration (str, optional): Animation duration. Defaults to "".
+        width (int, optional): Animation width. Defaults to -1.
+        height (int, optional): Animation height. Defaults to -1.
+        duration (int, optional): Animation duration. Defaults to -1.
 
     Returns:
         Dict: Returns a Animation to be sent.
@@ -255,7 +255,7 @@ def getInputMediaAnimation(media: str, caption="", thumb="", parse_mode='Markdow
     return {'type': 'animation', 'media': media, 'caption': caption, 'parse_mode': parse_mode, 'thumb': thumb, 'width': width, 'height': height, 'duration': duration}
 
 
-def getInputMediaAudio(media: str, caption="", thumb="", parse_mode='MarkdownV2', performer="", title="", duration="") -> Dict:
+def getInputMediaAudio(media: str, caption="", thumb="", parse_mode='MarkdownV2', performer="", title="", duration=-1) -> Dict:
     """ Represents an Audio file (GIF or H.264/MPEG-4 AVC video without sound) to be sent.
 
     Notes:
@@ -268,7 +268,7 @@ def getInputMediaAudio(media: str, caption="", thumb="", parse_mode='MarkdownV2'
         thumb (str, optional): Thumbnail of the file sent. The thumbnail should be in JPEG format and less than 200 kB in size. A thumbnail's width and height should not exceed 320. Defaults to "".
         performer (str, optional): Audio performer. Defaults to "".
         title (str, optional): Audio title. Defaults to "".
-        duration (str, optional): Audio duration. Defaults to "".
+        duration (int, optional): Audio duration. Defaults to -1.
 
     Returns:
         Dict: Returns a Audio to be sent.

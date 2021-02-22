@@ -900,3 +900,84 @@ class TelegramBotApi():
             return response['result']
         else:
             return {'error': 'Error with sendVideoNote method. Enable debug mode for more info', 'description': response['description']}
+
+
+    def sendMediaGroup(self, chat_id: str, media_url=[], local_media=[], disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True) -> Dict:
+            """ Use this method to send photos
+
+            Notes:
+                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendMediaGroup
+
+            Args:
+                chat_id (str): Unique identifier for the target chat or username of the target channel.
+                media_url (list, optional): Pass an array of HTTP URL as a String for Telegram to get a photo from the Internet. Defaults to "".
+                local_media (list, optional): An array of image paths. The photos must be at most 10 MB in size. The photos' width and height must not exceed 10000 in total. Width and height ratio must be at most 20. Defaults to "".
+                disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+                reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+                allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+
+            Returns:
+                Dict: On success, an array of sent Messages is returned.
+            """
+
+            token = self.botToken
+
+            if len(local_media) != 0:  # If using a local file array
+
+                files = {}
+                
+                inputMediaMediaArray = []
+
+                for images_ref in range(len(local_media)): # each media
+
+                    files[str(images_ref)] = (open(local_media[images_ref]['media'], 'rb'))
+
+                    local_media[images_ref]['media'] = 'attach://' + str(images_ref)
+
+                    inputMediaMediaArray.append(local_media[images_ref])
+
+                try:
+
+                    params = (
+                        ('chat_id', chat_id),
+                        ('media', json.dumps(inputMediaMediaArray)),
+                        ('disable_notification', disable_notification),
+                        ('reply_to_message_id', reply_to_message_id),
+                        ('allow_sending_without_reply', allow_sending_without_reply),
+                    )
+
+                    response = requests.post(f"https://api.telegram.org/bot{token}/sendMediaGroup", params=params, files=files).json()
+
+                except:
+                    return {'error': 'Error with sendMediaGroup method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+            else: # If using urls file array
+
+                inputMediaMediaArray = []
+
+                for media in media_url:  # each media
+
+                    inputMediaMediaArray.append(media)
+
+                try:
+
+                    params = (
+                        ('chat_id', chat_id),
+                        ('media', json.dumps(inputMediaMediaArray)),
+                        ('disable_notification', disable_notification),
+                        ('reply_to_message_id', reply_to_message_id),
+                        ('allow_sending_without_reply', allow_sending_without_reply),
+                    )
+
+                    response = requests.post(f"https://api.telegram.org/bot{token}/sendMediaGroup", params=params).json()
+                
+                except:
+                    return {'error': 'Error with sendMediaGroup method. Enable debug mode for more info', 'description': 'Bad file path'}
+
+            if self.debug:
+                print(response)
+
+            if response['ok']:
+                return response['result']
+            else:
+                return {'error': 'Error with sendMediaGroup method. Enable debug mode for more info', 'description': response['description']}
