@@ -981,3 +981,189 @@ class TelegramBotApi():
                 return response['result']
             else:
                 return {'error': 'Error with sendMediaGroup method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendLocation(self, chat_id: str, latitude: float, longitude: float, horizontal_accuracy="", live_period="", heading="", proximity_alert_radius="", disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send point on the map.
+
+        Notes:
+                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendLocation
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            latitude (float): Latitude of the location.
+            longitude (float): Longitude of the location.
+            horizontal_accuracy (str, optional): The radius of uncertainty for the location, measured in meters; 0-1500. Defaults to "".
+            live_period (str, optional): Period in seconds for which the location will be updated, should be between 60 and 86400. Defaults to "".
+            heading (str, optional): For live locations, a direction in which the user is moving, in degrees. Must be between 1 and 360 if specified. Defaults to "".
+            proximity_alert_radius (str, optional): For live locations, a maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000 if specified.. Defaults to "".
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: On success, the sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('latitude', latitude),
+            ('longitude', longitude),
+            ('horizontal_accuracy', horizontal_accuracy),
+            ('live_period', live_period),
+            ('heading', heading),
+            ('proximity_alert_radius', proximity_alert_radius),
+            ('horizontal_accuracy', horizontal_accuracy),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        response = requests.get(f"https://api.telegram.org/bot{token}/sendLocation", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendLocation method. Enable debug mode for more info', 'description': response['description']}
+
+    def editMessageLiveLocation(self, latitude: float, longitude: float, chat_id="", message_id="", inline_message_id="", horizontal_accuracy="", heading="", proximity_alert_radius="", reply_markup={}) -> Dict:
+        """ Use this method to edit live location messages. A location can be edited until its live_period expires or editing is explicitly disabled by a call to stopMessageLiveLocation.
+
+        Notes:
+                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/editMessageLiveLocation
+
+        Args:
+            latitude (float): Latitude of new location.
+            longitude (float): Longitude of new location.
+            chat_id (str, optional): Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel. Defaults to "".
+            message_id (str, optional): Required if inline_message_id is not specified. Identifier of the message to edit. Defaults to "".
+            inline_message_id (str, optional): Required if chat_id and message_id are not specified. Identifier of the inline message. Defaults to "".
+            horizontal_accuracy (str, optional): The radius of uncertainty for the location, measured in meters; 0-1500. Defaults to "".
+            heading (str, optional): Direction in which the user is moving, in degrees. Must be between 1 and 360 if specified. Defaults to "".
+            proximity_alert_radius (str, optional): Maximum distance for proximity alerts about approaching another chat member, in meters. Must be between 1 and 100000. Defaults to "".
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: On success, if the edited message is not an inline message, the edited Message is returned, otherwise True is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('latitude', latitude),
+            ('longitude', longitude),
+            ('message_id', message_id),
+            ('heading', heading),
+            ('proximity_alert_radius', proximity_alert_radius),
+            ('horizontal_accuracy', horizontal_accuracy),
+            ('inline_message_id', inline_message_id),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        response = requests.get(f"https://api.telegram.org/bot{token}/editMessageLiveLocation", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with editMessageLiveLocation method. Enable debug mode for more info', 'description': response['description']}
+
+
+    def stopMessageLiveLocation(self, chat_id="", message_id="", inline_message_id="", reply_markup={}) -> Dict:
+        """ Use this method to stop updating a live location message before live_period expires.
+
+            Notes:
+                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/stopMessageLiveLocation
+
+            Args:
+                chat_id (str, optional): Required if inline_message_id is not specified. Unique identifier for the target chat or username of the target channel. Defaults to "".
+                message_id (str, optional): Required if inline_message_id is not specified. Identifier of the message to edit. Defaults to "".
+                inline_message_id (str, optional): Required if chat_id and message_id are not specified. Identifier of the inline message. Defaults to "".
+                reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+            Returns:
+                Dict: On success, if the message was sent by the bot, the sent Message is returned, otherwise True is returned.
+            """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('message_id', message_id),
+            ('inline_message_id', inline_message_id),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/stopMessageLiveLocation", params=params).json()
+
+        if self.debug:
+                print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with stopMessageLiveLocation method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendVenue(self, chat_id: str, latitude: float, longitude: float, title: str, address: str, foursquare_id="", foursquare_type="", google_place_id="", google_place_type="", disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send information about a venue.
+
+        Notes:
+                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendVenue
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            latitude (float): Latitude of the location.
+            longitude (float): Longitude of the location.
+            title (str): Name of the venue.
+            address (str): Address of the venue.
+            foursquare_id (str, optional): Foursquare identifier of the venue. Defaults to "".
+            foursquare_type (str, optional): Foursquare type of the venue. Defaults to "".
+            google_place_id (str, optional): Google Places identifier of the venue. Defaults to "".
+            google_place_type (str, optional): Google Places type of the venue. Defaults to "".
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: [description]
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('latitude', latitude),
+            ('longitude', longitude),
+            ('title', title),
+            ('address', address),
+            ('foursquare_id', foursquare_id),
+            ('foursquare_type', foursquare_type),
+            ('google_place_id', google_place_id),
+            ('google_place_type', google_place_type),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/sendVenue", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendVenue method. Enable debug mode for more info', 'description': response['description']}
