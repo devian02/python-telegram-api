@@ -1167,3 +1167,107 @@ class TelegramBotApi():
             return response['result']
         else:
             return {'error': 'Error with sendVenue method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendContact(self, chat_id: str, phone_number: str, first_name: str, last_name="", disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send phone contacts.
+
+        Notes:
+                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendContact
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            phone_number (str): Contact's phone number.
+            first_name (str): Contact's first name.
+            last_name (str, optional): Contact's last name. Defaults to "".
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict:  On success, the sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('phone_number', phone_number),
+            ('first_name', first_name),
+            ('last_name', last_name),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/sendContact", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendContact method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendPoll(self, chat_id: str, question: str, options: list, is_anonymous=True, type="regular", allows_multiple_answers=False, correct_option_id="", explanation="", explanation_parse_mode="MarkdownV2", open_period="", close_date="", is_closed=False, disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send a native poll.
+
+        Notes:
+                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendPoll
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            question (str): Poll question, 1-300 characters
+            options (list): A JSON-serialized list of answer options, 2-10 strings 1-100 characters each.
+            is_anonymous (bool, optional): True, if the poll needs to be anonymous. Defaults to True.
+            type (str, optional): Poll type, “quiz” or “regular”. Defaults to "regular".
+            allows_multiple_answers (bool, optional): True, if the poll allows multiple answers, ignored for polls in quiz mode. Defaults to False.
+            correct_option_id (str, optional): identifier of the correct answer option, required for polls in quiz mode. Defaults to "".
+            explanation (str, optional): Text that is shown when a user chooses an incorrect answer or taps on the lamp icon in a quiz-style poll, 0-200 characters. Defaults to "".
+            explanation_parse_mode (str, optional): Mode for parsing entities in the explanation. Defaults to "MarkdownV2".
+            open_period (str, optional): Amount of time in seconds the poll will be active after creation, 5-600. Can't be used together with close_date. Defaults to "".
+            close_date (str, optional): Point in time (Unix timestamp) when the poll will be automatically closed. Must be at least 5 and no more than 600 seconds in the future. Can't be used together with open_period. Defaults to "".
+            is_closed (bool, optional): Pass True, if the poll needs to be immediately closed. This can be useful for poll preview. Defaults to False.
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict: On success, the sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('question', question),
+            ('options', json.dumps(options)),
+            ('is_anonymous', is_anonymous),
+            ('type', type),
+            ('allows_multiple_answers', allows_multiple_answers),
+            ('correct_option_id', correct_option_id),
+            ('explanation', explanation),
+            ('explanation_parse_mode', explanation_parse_mode),
+            ('open_period', open_period),
+            ('close_date', close_date),
+            ('is_closed', is_closed),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/sendPoll", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendPoll method. Enable debug mode for more info', 'description': response['description']}
