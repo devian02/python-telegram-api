@@ -779,7 +779,7 @@ class TelegramBotApi():
         """ Use this method to send audio files
 
         Notes:
-                For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendVoice
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendVoice
 
         Args:
             chat_id (str): Unique identifier for the target chat or username of the target channel.
@@ -1172,7 +1172,7 @@ class TelegramBotApi():
         """ Use this method to send phone contacts.
 
         Notes:
-                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendContact
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendContact
 
         Args:
             chat_id (str): Unique identifier for the target chat or username of the target channel.
@@ -1216,7 +1216,7 @@ class TelegramBotApi():
         """ Use this method to send a native poll.
 
         Notes:
-                    For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendPoll
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendPoll
 
         Args:
             chat_id (str): Unique identifier for the target chat or username of the target channel.
@@ -1271,3 +1271,107 @@ class TelegramBotApi():
             return response['result']
         else:
             return {'error': 'Error with sendPoll method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendDice(self, chat_id: str, emoji="🎲", disable_notification=False, reply_to_message_id=None, allow_sending_without_reply=True, reply_markup={}) -> Dict:
+        """ Use this method to send an animated emoji that will display a random value.
+
+        Notes:
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendDice
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            emoji (str): Emoji on which the dice throw animation is based. Currently, must be one of “🎲”, “🎯”, “🏀”, “⚽”, “🎳”, or “🎰”. Dice can have values 1-6 for “🎲”, “🎯” and “🎳”, values 1-5 for “🏀” and “⚽”, and values 1-64 for “🎰”. Defaults to “🎲”.
+            disable_notification (bool, optional): If True sends the message silently (Users will receive a notification with no sound). Defaults to False.
+            reply_to_message_id (int, optional): ID of the original message to reply to. Defaults to None.
+            allow_sending_without_reply (bool, optional): If True the message will be sent even if the specified replied-to message is not found. Defaults to True.
+            reply_markup (dict, optional): Additional interface options (A JSON-serialized object). Defaults to {}.
+
+        Returns:
+            Dict:  On success, the sent Message is returned.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('emoji', emoji),
+            ('disable_notification', disable_notification),
+            ('reply_to_message_id', reply_to_message_id),
+            ('allow_sending_without_reply', allow_sending_without_reply),
+            ('reply_markup', json.dumps(reply_markup)),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/sendDice", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendDice method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendChatAction(self, chat_id: str, action: str) -> Dict:
+        """ Use this method when you need to tell the user that something is happening on the bot's side.
+
+        Notes:
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendChatAction
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            action (str): Type of action to broadcast.
+
+        Returns:
+            Dict: Returns True on success.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('action', action),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/sendChatAction", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendChatAction method. Enable debug mode for more info', 'description': response['description']}
+
+    def sendChatAction(self, chat_id: str, action: str) -> Dict:
+        """ Use this method when you need to tell the user that something is happening on the bot's side.
+
+        Notes:
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendChatAction
+
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target channel.
+            action (str): Type of action to broadcast.
+
+        Returns:
+            Dict: Returns True on success.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('chat_id', chat_id),
+            ('action', action),
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/sendChatAction", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with sendChatAction method. Enable debug mode for more info', 'description': response['description']}
