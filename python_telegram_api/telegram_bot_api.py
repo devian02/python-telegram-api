@@ -1312,7 +1312,7 @@ class TelegramBotApi():
         else:
             return {'error': 'Error with sendDice method. Enable debug mode for more info', 'description': response['description']}
 
-    def sendChatAction(self, chat_id: str, action: str) -> Dict:
+    def sendChatAction(self, chat_id: str, action: str) -> bool:
         """ Use this method when you need to tell the user that something is happening on the bot's side.
 
         Notes:
@@ -1323,7 +1323,7 @@ class TelegramBotApi():
             action (str): Type of action to broadcast.
 
         Returns:
-            Dict: Returns True on success.
+            bool: Returns True on success.
         """
 
         token = self.botToken
@@ -1344,29 +1344,31 @@ class TelegramBotApi():
         else:
             return {'error': 'Error with sendChatAction method. Enable debug mode for more info', 'description': response['description']}
 
-    def sendChatAction(self, chat_id: str, action: str) -> Dict:
-        """ Use this method when you need to tell the user that something is happening on the bot's side.
+    def getUserProfilePhotos(self, user_id: str, offset=-1, limit=100) -> Dict:
+        """ Use this method to get a list of profile pictures for a user.
 
         Notes:
-            For more info -> https://github.com/xSklero/python-telegram-api/wiki/sendChatAction
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/getUserProfilePhotos
 
         Args:
-            chat_id (str): Unique identifier for the target chat or username of the target channel.
-            action (str): Type of action to broadcast.
+            user_id (str): Unique identifier of the target user.
+            offset (int): Sequential number of the first photo to be returned. By default, all photos are returned.
+            limit (int): Limits the number of photos to be retrieved. Values between 1-100 are accepted. Defaults to 100.
 
         Returns:
-            Dict: Returns True on success.
+            Dict: Returns a UserProfilePhotos object.
         """
 
         token = self.botToken
 
         params = (
-            ('chat_id', chat_id),
-            ('action', action),
+            ('user_id', user_id),
+            ('offset', offset),
+            ('limit', limit),
         )
 
         response = requests.get(
-            f"https://api.telegram.org/bot{token}/sendChatAction", params=params).json()
+            f"https://api.telegram.org/bot{token}/getUserProfilePhotos", params=params).json()
 
         if self.debug:
             print(response)
@@ -1374,4 +1376,4 @@ class TelegramBotApi():
         if response['ok']:
             return response['result']
         else:
-            return {'error': 'Error with sendChatAction method. Enable debug mode for more info', 'description': response['description']}
+            return {'error': 'Error with getUserProfilePhotos method. Enable debug mode for more info', 'description': response['description']}
