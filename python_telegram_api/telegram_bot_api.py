@@ -1377,3 +1377,32 @@ class TelegramBotApi():
             return response['result']
         else:
             return {'error': 'Error with getUserProfilePhotos method. Enable debug mode for more info', 'description': response['description']}
+    
+    def getChatMember(self, chat_id:str, user_id: str) -> Dict:
+        """ Use this method to get information about a member of a chat.
+        Notes:
+            For more info -> https://github.com/xSklero/python-telegram-api/wiki/getChatMember
+        Args:
+            chat_id (str): Unique identifier for the target chat or username of the target supergroup.
+            user_id (str): Unique identifier of the target user.
+        Returns:
+            Dict: Returns a ChatMember object on success.
+        """
+
+        token = self.botToken
+
+        params = (
+            ('user_id', user_id),
+            ('chat_id', chat_id)
+        )
+
+        response = requests.get(
+            f"https://api.telegram.org/bot{token}/getChatMember", params=params).json()
+
+        if self.debug:
+            print(response)
+
+        if response['ok']:
+            return response['result']
+        else:
+            return {'error': 'Error with getChatMember method. Enable debug mode for more info', 'description': response['description']}
